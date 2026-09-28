@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vega@6.4.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@6.4.3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@7.1.0"></script>
+</head>
+<body>
+  <div id="vis"/>
+  <script>
+    const spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "data": {"url": "https://vega.github.io/editor/data/movies.json"},
+  "hconcat": [
+    {
+      "mark": "point",
+      "params": [{"name": "my_first_brush", "select": "interval"}],
+      "encoding": {
+        "x": {"field": "Worldwide Gross", "type": "quantitative"},
+        "y": {"field": "Production Budget", "type": "quantitative"}
+      }
+    },
+    {
+      "layer": [
+        {
+          "mark": "bar",
+          "encoding": {
+            "x": {"field": "IMDB Rating", "bin": true},
+            "y": {"aggregate": "count"},
+            "color": {"value": "lightgrey"}
+          }
+        },
+        {
+          "mark": "bar",
+          "transform": [{"filter": {"param": "my_first_brush"}}],
+          "encoding": {
+            "x": {"field": "IMDB Rating", "bin": true},
+            "y": {"aggregate": "count"}
+          }
+        }
+      ]
+    }
+  ],
+  "config": {}
+};
+    vegaEmbed("#vis", spec, {mode: "vega-lite"}).then(console.log).catch(console.warn);
+  </script>
+</body>
+</html>
